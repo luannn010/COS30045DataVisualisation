@@ -1,21 +1,20 @@
 
 function DataScatterPot() {
   // define the data points
-  let dataset = [    [19,39],
+  let dataset = [  [700,400],  
     [480, 90],
     [300,400],
-    [120, 33],
+    [100,10],
     [330, 95],
-    [410, 12],
     [475, 44],
     [84, 90],
-    [85, 21],
+
     [220, 88],
     [150, 280],
     [200, 350],
     [50, 100],
     [390, 200],
-    [250, 80],
+    
     [350, 320],
     [180, 70],
     [420, 120],
@@ -35,13 +34,13 @@ function DataScatterPot() {
                 .domain([d3.min(dataset, d => d[0]), 
                          d3.max(dataset, d => d[0])])
                 //Range available for visualisation
-                .range([padding, w - padding]);
+                .range([padding + 10, w - padding + 10]);
   var yScale = d3.scaleLinear()
                 //Data input range(use d3.min and d3.max)
                 .domain([d3.min(dataset, d => d[1]), 
                          d3.max(dataset, d => d[1])])
                 //Range available for visualisation
-                .range([h - padding, padding]);
+                .range([h - padding - 10, padding - 10]);
   // Create xAxis 
   var xAxis = d3.axisBottom()
                 .ticks(5)
@@ -67,7 +66,14 @@ function DataScatterPot() {
         .attr("cy", (d,i) => yScale(d[1]))
         .attr("r", 6)
         //Add some colors
-        .attr("fill", "lightblue");
+        .attr("fill", (d) => {
+          if (d[0] === d3.max(dataset, d => d[0]) && d[1] === d3.max(dataset, d => d[1])) {
+            return "red";
+          } else {
+            return "lightblue";
+          }
+        });
+        
   // Add label
     svg.selectAll("text")
        .data(dataset)
@@ -84,18 +90,24 @@ function DataScatterPot() {
   // Draw xAxis
     svg.append("g")
        .attr("class", "axis")
-       .attr("transform","translate(0, "+ (h-padding + 10) +")")
+       .attr("transform","translate(0, "+ (h-padding) +")")
        .call(xAxis);
   // Draw yAxis
     svg.append("g") 
        .attr("class", "axis") 
-       .attr("transform", "translate(" + (padding - 10) + ",0)") 
+       .attr("transform", "translate(" + (padding) + ",0)") 
        .call(yAxis);
-  //Add lable for Axis
+  //Add lable for xAxis
   svg.append("text")
   .attr("text-anchor", "middle")
   .attr("transform", "translate(" + (w/2) + "," + (h - 10) + ")")
   .text("X Axis");
+  //Add lable for yAxis
+  svg.append("text")
+  .attr("text-anchor", "middle")
+  .attr("transform", "rotate(-90) translate(-" + (h/2 + 10) + ", 10)")
+  .text("Y Axis");
+
 }
 
 function main() {

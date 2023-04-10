@@ -1,0 +1,46 @@
+html {
+	scroll-behavior: smooth;
+  }
+
+body{
+	margin:auto;
+	margin-bottom: 50px;
+	width:1024px;
+	padding:10px;
+	background-color:#ebebeb;
+	font-size:14px;
+	font-family:Verdana;
+}
+
+h1 {
+	font-style: bold;
+	color: rgb(10, 77, 148);
+}
+
+h2 {
+	font-weight: normal;
+}
+
+ 
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: #ebebeb;
+	text-align: center;
+	padding: 10px;
+  }
+
+centre {
+	position: fixed;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+}
+.axis text{
+	color: olive;
+}
+.axis path{
+	color: rgb(8, 114, 15);
+}

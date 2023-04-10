@@ -21,7 +21,7 @@ h2 {
 	font-weight: normal;
 }
 
- 
+
 footer {
 	position: fixed;
 	left: 0;
@@ -37,10 +37,4 @@ centre {
   	top: 50%;
   	left: 50%;
   	transform: translate(-50%, -50%);
-}
-.axis text{
-	color: olive;
-}
-.axis path{
-	color: rgb(8, 114, 15);
 }

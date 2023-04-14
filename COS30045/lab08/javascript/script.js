@@ -1,20 +1,23 @@
 function map() {
-  var w = 800;
-  var h = 400;
+  
+  var w = 1000;
+  var h = 500;
+  var margin = {top: 100, right: 20, bottom: 60, left: 50};
 
   var projection = d3.geoMercator()
-                     .center([145, -36.5])
-                     .translate([w/2 , h/2])
-                     .scale(3000); // size
+                     .center([145, -37.8])
+                     .scale(3800)
+                     .translate([w/2, h/2]);
 
   var path = d3.geoPath()
                .projection(projection);
                
   var svg = d3.select("#map")
-              .append("svg")
-              .attr("width", w)
-              .attr("height", h)
-              .attr("fill", "grey");
+               .append("svg")
+               .attr("width", w + margin.left + margin.right)
+               .attr("height", h + margin.top + margin.bottom)
+               .append("g")
+               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
               
   var color = d3.scaleQuantize()
                 // get color range from https://colorbrewer2.org/#type=sequential&scheme=YlGnBu&n=5
@@ -29,6 +32,8 @@ function map() {
       d3.min(data, function(d){ return  d.unemployed; }),
       d3.max(data, function(d){ return  d.unemployed; })
     ]);
+
+    
 
     // Load file json
     d3.json("data/LGA_VIC.json").then(function(json) {
@@ -68,21 +73,112 @@ function map() {
              return "#ccc";
            }
          })
-         .on("mouseover", function(d) {
-  // Set up tooltip
-  var tooltip = d3.select("#tooltip");
-  tooltip.style("visibility","visible")
-         .html("<b>" + d.features.properties.LGA_name + "</b><br>" + 
-                "Unemployment rate:" + d.properties.unemployed);
-})
-.on("mouseout", function(d) {
-  // Hide tooltip
-  var tooltip = d3.select("#tooltip");
-  tooltip.style("visibility","hidden");
-});
+         .on("mouseover", function(event, d) {
+          // Set up tooltip
+          var tooltip = d3.select("#tooltip");
+          tooltip.style("visibility", "visible")
+            .html("<b>" + d.properties.LGA_name + "</b><br>" +
+                  "Unemployment rate: " + d.properties.unemployed)
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 28) + "px");
+          // Change border style
+          d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", 2);
+        })
+        .on("mouseout", function() {
+          // Hide tooltip
+          var tooltip = d3.select("#tooltip");
+          tooltip.style("visibility", "hidden");
+          // Revert border style
+          d3.select(this)
+            .style("stroke", null)
+            .style("stroke-width", null);
+        });
+
+        // add Cities
+        d3.csv("data/VIC_city.csv").then(function(cityData) {
+          var circle = svg.selectAll("circle")
+            .data(cityData)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) {
+              return projection([+d.lon, +d.lat])[0];
+            })
+            .attr("cy", function(d) {
+              return projection([+d.lon, +d.lat])[1];
+            })
+            .attr("r", 3)
+            .style("fill", "red")
+            .style("opacity", 0.75)
+            
+          var majorCity = svg.selectAll("text.city")
+                             .data(cityData)
+                             .enter()
+                             .append("text")
+                             .attr("class","city-lable")
+                             .attr("x", function(d) {
+                              return projection([+d.lon, +d.lat])[0] +10;
+                            })
+                             .attr("y", function(d) {
+                              return projection([+d.lon, +d.lat])[1] +10 ;
+                            })
+                             .text(function(d) {
+                              return d.place
+                             })
+                             .style("font-size", "12px")
+                             .style("fill", "green")
+                            
+        });
+        
+        
+        
+        
+
+var legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", "translate(" + (w - 100) + "," + 20 + ")")
+        .style("font-size", "20px");
+
+var legendTitle = legend.append("text")
+                       .attr("class", "legend-title")
+                       .attr("x", 10)
+                       .attr("y", -10)
+                       .text("Unemployment Rate");
+
+var legendRect = legend.selectAll("rect")
+                       .data(color.range())
+                       .enter()
+                       .append("rect")
+                       .attr("x", 10)
+                       .attr("y", function(d, i) { return i * 20; })
+                       .attr("width", 20)
+                       .attr("height", 20)
+                       .style("fill", function(d) { return d; });
+
+var legendText = legend.selectAll("text.legend-label")
+                       .data(color.range())
+                       .enter()
+                       .append("text")
+                       .attr("class", "legend-label")
+                       .attr("x", 35)
+                       .attr("y", function(d, i) { return i * 20 + 14; })
+                       .text(function(d, i) { 
+                         var extent = color.invertExtent(d);
+                         var format = d3.formatPrefix(".1", 1e3);
+                         return format(+extent[0]) + " - " + format(+extent[1]);
+                       })
+                       .style("font-size", "20px")
+                       .style("fill", "black");
+                     
+
+        
 
          
     });
+
+
+    
   });
 }
 

@@ -50,3 +50,13 @@ centre {
 .area {
 	fill: grey;
 }
+
+div#tooltip {
+	position:absolute;
+	z-index: 10;
+	visibility: hidden;
+	background-color: rgb(157, 203, 226);
+	border: 1px solid black;
+	padding: 6px 10px;
+	font-size: 12px;
+}

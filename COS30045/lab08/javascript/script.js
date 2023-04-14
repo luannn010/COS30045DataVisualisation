@@ -18,8 +18,10 @@ function map() {
               
   var color = d3.scaleQuantize()
                 // get color range from https://colorbrewer2.org/#type=sequential&scheme=YlGnBu&n=5
-                .range(['rgb(255,255,204)','rgb(161,218,180)','rgb(65,182,196)','rgb(44,127,184)','rgb(37,52,148)']);
- 
+                .range(['rgb(247,252,240)','rgb(224,243,219)','rgb(204,235,197)','rgb(168,221,181)','rgb(123,204,196)','rgb(78,179,211)','rgb(51, 102, 204)','rgb(43,140,190)','rgb(8,104,172)','rgb(8,64,129)']);
+
+  
+  
   // Load file csv  
   d3.csv("data/VIC_LGA_unemployment.csv").then(function(data){
     // SetUp Color
@@ -65,7 +67,21 @@ function map() {
              // If value is undefined, use gray color
              return "#ccc";
            }
-         });
+         })
+         .on("mouseover", function(d) {
+  // Set up tooltip
+  var tooltip = d3.select("#tooltip");
+  tooltip.style("visibility","visible")
+         .html("<b>" + d.features.properties.LGA_name + "</b><br>" + 
+                "Unemployment rate:" + d.properties.unemployed);
+})
+.on("mouseout", function(d) {
+  // Hide tooltip
+  var tooltip = d3.select("#tooltip");
+  tooltip.style("visibility","hidden");
+});
+
+         
     });
   });
 }

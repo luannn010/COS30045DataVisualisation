@@ -74,7 +74,7 @@ function map() {
            }
          })
          .on("mouseover", function(event, d) {
-          // Set up tooltip
+          // Set up tooltip optional)
           var tooltip = d3.select("#tooltip");
           tooltip.style("visibility", "visible")
             .html("<b>" + d.properties.LGA_name + "</b><br>" +
@@ -133,46 +133,46 @@ function map() {
         
         
         
-        
+        // Add legends (text and color)(optional)
 
-var legend = svg.append("g")
-        .attr("class", "legend")
-        .attr("transform", "translate(" + (w - 100) + "," + 20 + ")")
-        .style("font-size", "20px");
+          var legend = svg.append("g")
+                  .attr("class", "legend")
+                  .attr("transform", "translate(" + (w - 100) + "," + 20 + ")")
+                  .style("font-size", "20px");
 
-var legendTitle = legend.append("text")
-                       .attr("class", "legend-title")
-                       .attr("x", 10)
-                       .attr("y", -10)
-                       .text("Unemployment Rate");
+          var legendTitle = legend.append("text")
+                                .attr("class", "legend-title")
+                                .attr("x", 10)
+                                .attr("y", -10)
+                                .text("Unemployed");
 
-var legendRect = legend.selectAll("rect")
-                       .data(color.range())
-                       .enter()
-                       .append("rect")
-                       .attr("x", 10)
-                       .attr("y", function(d, i) { return i * 20; })
-                       .attr("width", 20)
-                       .attr("height", 20)
-                       .style("fill", function(d) { return d; });
+          var legendRect = legend.selectAll("rect")
+                                .data(color.range())
+                                .enter()
+                                .append("rect")
+                                .attr("x", 10)
+                                .attr("y", function(d, i) { return i * 20; })
+                                .attr("width", 20)
+                                .attr("height", 20)
+                                .style("fill", function(d) { return d; });
 
-var legendText = legend.selectAll("text.legend-label")
-                       .data(color.range())
-                       .enter()
-                       .append("text")
-                       .attr("class", "legend-label")
-                       .attr("x", 35)
-                       .attr("y", function(d, i) { return i * 20 + 14; })
-                       .text(function(d, i) { 
-                         var extent = color.invertExtent(d);
-                         var format = d3.formatPrefix(".1", 1e3);
-                         return format(+extent[0]) + " - " + format(+extent[1]);
-                       })
-                       .style("font-size", "20px")
-                       .style("fill", "black");
-                     
+          var legendText = legend.selectAll("text.legend-label")
+                                .data(color.range())
+                                .enter()
+                                .append("text")
+                                .attr("class", "legend-label")
+                                .attr("x", 35)
+                                .attr("y", function(d, i) { return i * 20 + 14; })
+                                .text(function(d, i) { 
+                                  var extent = color.invertExtent(d);
+                                  var format = d3.formatPrefix(".1", 1e3);
+                                  return format(+extent[0]) + " - " + format(+extent[1]);
+                                })
+                                .style("font-size", "20px")
+                                .style("fill", "black");
+                              
 
-        
+                  
 
          
     });

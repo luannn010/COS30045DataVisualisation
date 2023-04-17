@@ -127,7 +127,7 @@ function map() {
                               return d.place
                              })
                              .style("font-size", "12px")
-                             .style("fill", "green")
+                             .style("fill", "black")
                             
         });
         

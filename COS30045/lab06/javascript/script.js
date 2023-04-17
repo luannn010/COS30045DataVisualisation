@@ -13,7 +13,7 @@ var xScale = d3.scaleBand()
 var yScale = d3.scaleLinear()
                .domain([0, d3.max(dataset)])
                .rangeRound([h,0]);
-function BarChart(dataset,delay,duration,ease) {
+function BarChart(dataset,delay,duration,ease) { //draw Bar charts
   
   var bars = svg1.selectAll("rect")
                  .data(dataset)
